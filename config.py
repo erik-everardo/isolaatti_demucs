@@ -9,7 +9,9 @@ url_create_song_record = "https://isolaattiapi.azurewebsites.net/CreateSongRecor
 
 # paths
 path_dir_dw_songs = path.join(environ.get("HOME"),"downloaded_songs_isolaatti")
-path_dir_results = path.join(environ.get("HOME"),"demucs_host_processor","demucs","separated","demucs")
+path_dir_results = path.join(environ.get("HOME"),"isolaatti_demucs","demucs","separated","light_extra")
+
+url_google_bucket = "https://isolaatti-b6641.appspot.com.storage.googleapis.com/"
 
 # type here settings to do everytime the server starts
 def config():

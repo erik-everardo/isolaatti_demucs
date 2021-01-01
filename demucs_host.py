@@ -68,8 +68,8 @@ def start_process(userId,url,songName, songArtist):
     print(colored("[demucs_service]","blue"),"Here the job is being done...")
 
     # it's easier to call the interpreter by executing a command
-    command = 'python3 -m demucs.separate --dl -n demucs "{}"'.format(name)
-    if(not os.getcwd() == os.path.join(os.environ.get("HOME"),"demucs_host_processor","demucs")):
+    command = 'python3 -m demucs.separate --dl -n light_extra "{}"'.format(name)
+    if(not os.getcwd() == os.path.join(os.environ.get("HOME"),"isolaatti_demucs","demucs")):
         os.chdir("demucs")
     os.system(command)
 
@@ -101,32 +101,32 @@ def upload_songs(paths, user_id, song_id):
     bass_blob = bucket.blob(bass_blob_destination)
     bass_blob.upload_from_filename(paths.get("mp3_bass"))
     bass_blob.make_public()
-    result_bass_url = bass_blob.public_url
+    result_bass_url = config.url_google_bucket + bass_blob_destination
 
     #upload drums
     drums_blob_destination = "results/{}/{}/drums.mp3".format(user_id,uid)
     drums_blob = bucket.blob(drums_blob_destination)
     drums_blob.upload_from_filename(paths.get("mp3_drums"))
     drums_blob.make_public()
-    result_drums_url = drums_blob.public_url
+    result_drums_url = config.url_google_bucket + drums_blob_destination
 
     #upload vocals
     vocals_blob_destination = "results/{}/{}/vocals.mp3".format(user_id,uid)
     vocals_blob = bucket.blob(vocals_blob_destination)
     vocals_blob.upload_from_filename(paths.get("mp3_vocals"))
     vocals_blob.make_public()
-    result_vocals_url = vocals_blob.public_url
+    result_vocals_url = config.url_google_bucket + vocals_blob_destination
 
     #upload other
     other_blob_destination = "results/{}/{}/other.mp3".format(user_id,uid)
     other_blob = bucket.blob(other_blob_destination)
     other_blob.upload_from_filename(paths.get("mp3_other"))
     other_blob.make_public()
-    result_other_url = other_blob.public_url
+    result_other_url = config.url_google_bucket + other_blob_destination
 
     # finally, urls are sent to API, and the user will be notified
-    API.complete_record(song_id,result_bass_url,result_drums_url,result_vocals_url,result_other_url)
-    
+    API.complete_record(song_id,result_bass_url,result_drums_url,result_vocals_url,result_other_url, uid)
+
 
 def record_to_database(google_storage_route,user_id):
     print("Sending request to WEB API")
@@ -161,13 +161,7 @@ print(colored("#### Demucs host processor ####","magenta",attrs=["bold"]))
 print(colored("This host will be requesting a job every 10 seconds, until it finds one...","yellow",attrs=["bold"]))    
 
 print("Setting up Google Firebase Admin")
-# change path when configuring
-#cred = credentials.Certificate("/home/erik/secrets/isolaatti-server/isolaatti-b6641-firebase-adminsdk-vwe7w-5263d66782.json")
-#
-#if not firebase_admin._apps:
- #   firebase_admin.initialize_app(cred, {
- #   'storageBucket' : 'isolaatti-b6641.appspot.com'
- #   })
+
 
 cloud_storage_client = storage.Client()
 

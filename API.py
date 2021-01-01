@@ -18,13 +18,14 @@ def create_song_record(user_id,song_name,song_artist):
     }
     return requests.post(config.url_create_song_record,query)
 
-def complete_record(song_id, bass_url, drums_url, vocals_url, other_url):
+def complete_record(song_id, bass_url, drums_url, vocals_url, other_url, uid):
     query = {
-        'songId' : song_id,
-        'bassUrl' : bass_url,
+        'songId'   : song_id,
+        'bassUrl'  : bass_url,
         'drumsUrl' : drums_url,
         'voiceUrl' : vocals_url,
-        'otherUrl' : other_url
+        'otherUrl' : other_url,
+        'uid'      : uid
     }
     requests.post(config.url_completed_process, query)
 
